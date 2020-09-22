@@ -1,33 +1,67 @@
 import javafx.animation.AnimationTimer
 import javafx.application.Application
+import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
+import javafx.scene.canvas.GraphicsContext
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+import javafx.scene.paint.Color
+import javafx.scene.text.Font
 import javafx.stage.Stage
+import units.AngleUnit
+import units.ReactionUnit
 
 class App : Application() {
 
     inner class TestUnitTimer : AnimationTimer() {
 
         private var currentIndex = 0
+        private var dataUtil = DataUtil()
 
         override fun handle(now: Long) {
-            if (currentIndex >= tests.size) {
-                stop()
-                return
-            }
+            canvas.graphicsContext2D.fill = Color.WHITE
+            canvas.graphicsContext2D.fillRect(0.0, 0.0, WIDTH.toDouble(), HEIGHT.toDouble())
             tests[currentIndex].update(canvas.graphicsContext2D)
+
+
+            canvas.graphicsContext2D.fill = Color.BLACK
+            canvas.graphicsContext2D.font = Font.font(10.0)
+            canvas.graphicsContext2D.fillText("Time: " + tests[currentIndex].getRuntime() / 1000.0 + "s", 10.0, 10.0)
+            canvas.graphicsContext2D.fillText("Name: " + tests[currentIndex].getName(), 10.0, 30.0)
+
+
             if (tests[currentIndex].isFinished()) {
+                tests[currentIndex].saveResults(dataUtil)
                 currentIndex++
+                if (currentIndex >= tests.size) {
+                    stop()
+                    Platform.exit()
+                    return
+                }
             }
+        }
+
+        fun onMouseEvent(event: MouseEvent) {
+            tests[currentIndex].onClick(event.x, event.y)
+        }
+
+        fun onMouseMove(event: MouseEvent){
+            tests[currentIndex].onMove(event.x, event.y)
+        }
+
+        fun onKey(event: KeyEvent) {
+            tests[currentIndex].onKey(event.code)
         }
 
     }
 
     private lateinit var canvas: Canvas
-    private lateinit var timer: AnimationTimer
+    private lateinit var timer: TestUnitTimer
 
-    val tests: List<TestUnit> = mutableListOf()
+    val tests: MutableList<TestUnit> = mutableListOf()
 
     override fun start(stage: Stage) {
         val root = Pane()
@@ -37,10 +71,24 @@ class App : Application() {
 
         root.children.add(canvas)
 
+        canvas.setOnMouseClicked {
+            timer.onMouseEvent(it)
+        }
+
+        canvas.setOnMouseMoved {
+            timer.onMouseMove(it)
+        }
+
         val scene = Scene(root, WIDTH.toDouble(), HEIGHT.toDouble())
+
+        scene.setOnKeyPressed {
+            timer.onKey(it)
+        }
+
         stage.scene = scene
         stage.show()
-
+        addTests()
+        runTests()
     }
 
     companion object {
@@ -53,8 +101,24 @@ class App : Application() {
         timer.start()
     }
 
-}
+    fun addTests() {
+        /*addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLACK))
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREY))
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREEN))
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))*/
+        addTest(AngleUnit())
+    }
 
+    fun addTest(test: TestUnit) {
+        tests.add(test.apply {
+            width = WIDTH
+            height = HEIGHT
+            startTime = System.currentTimeMillis()
+        })
+    }
+
+}
 
 fun main() {
     Application.launch(App::class.java)
