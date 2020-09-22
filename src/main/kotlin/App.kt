@@ -3,8 +3,6 @@ import javafx.application.Application
 import javafx.application.Platform
 import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
-import javafx.scene.canvas.GraphicsContext
-import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
@@ -22,15 +20,18 @@ class App : Application() {
         private var dataUtil = DataUtil()
 
         override fun handle(now: Long) {
-            canvas.graphicsContext2D.fill = Color.WHITE
-            canvas.graphicsContext2D.fillRect(0.0, 0.0, WIDTH.toDouble(), HEIGHT.toDouble())
-            tests[currentIndex].update(canvas.graphicsContext2D)
+            val gc = canvas.graphicsContext2D
+
+            gc.fill = Color.WHITE
+            gc.fillRect(0.0, 0.0, WIDTH.toDouble(), HEIGHT.toDouble())
+            tests[currentIndex].update(gc)
 
 
-            canvas.graphicsContext2D.fill = Color.BLACK
-            canvas.graphicsContext2D.font = Font.font(10.0)
-            canvas.graphicsContext2D.fillText("Time: " + tests[currentIndex].getRuntime() / 1000.0 + "s", 10.0, 10.0)
-            canvas.graphicsContext2D.fillText("Name: " + tests[currentIndex].getName(), 10.0, 30.0)
+            gc.fill = Color.BLACK
+            gc.font = Font.font(10.0)
+            gc.fillText("Time: " + tests[currentIndex].getRuntime() / 1000.0 + "s", 10.0, 10.0)
+            gc.fillText("Name: " + tests[currentIndex].getName(), 10.0, 30.0)
+            gc.fillText("Desc: " + tests[currentIndex].getDesc(), 10.0, 50.0)
 
 
             if (tests[currentIndex].isFinished()) {

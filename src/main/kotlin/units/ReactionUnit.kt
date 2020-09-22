@@ -106,6 +106,7 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
     }
 
     override fun getName() = "ReactionUnit_"+ reactionType.name
+    override fun getDesc() = "Press any key when the rectangle is visible"
 
     private fun calcAvg(): Float {
         var value: Long = 0
