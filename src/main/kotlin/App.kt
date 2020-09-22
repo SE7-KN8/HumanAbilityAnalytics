@@ -9,10 +9,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.stage.Stage
-import units.AngleUnit
-import units.InfoUnit
-import units.ReactionUnit
-import units.RememberUnit
+import units.*
 import javax.swing.JOptionPane
 
 class App : Application() {
@@ -37,7 +34,7 @@ class App : Application() {
             fpsAvg += currentFps
 
             if (fpsCounter == 5) {
-                lastFpsAvg = fpsAvg / (fpsCounter.toDouble() + 1.0)
+                lastFpsAvg = fpsAvg / (fpsCounter.toDouble())
                 fpsCounter = 0
                 fpsAvg = 0.0
             }
@@ -52,7 +49,7 @@ class App : Application() {
             gc.fill = Color.BLACK
             gc.font = Font.font(10.0)
 
-            gc.fillText("Time: " + tests[currentIndex].getRuntime() / 1000.0 + "s", 10.0, 10.0)
+            gc.fillText("Time: " + tests[currentIndex].getRuntime(), 10.0, 10.0)
             gc.fillText("Name: " + tests[currentIndex].getName(), 10.0, 30.0)
             gc.fillText("Desc: " + tests[currentIndex].getDesc(), 10.0, 50.0)
             gc.fillText("FPS: " + lastFpsAvg.toInt(), 10.0, 70.0)
@@ -135,6 +132,7 @@ class App : Application() {
 
     fun addTests() {
         addTest(InfoUnit("Welcome to HAA (Human Ability Analytics)!\nStay safe and enjoy the flight."))
+        addTest(CountdownUnit(30))
         addTest(AngleUnit(3))
         addTest(RememberUnit(5, RememberUnit.RememberUnitType.NUMBERS_ONLY))
         addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_ONLY))
