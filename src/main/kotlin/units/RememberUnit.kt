@@ -60,7 +60,6 @@ class RememberUnit(maxRuns: Int, private val rememberUnitType: RememberUnitType)
         if (getRuntime() >= endSequenceTime) {
             gc.fill = Color.GREEN
             gc.fillText(typedSequence.joinToString("   "), hWidth() - hWidth() / 2, hHeight())
-            gc.fillText(sequence.joinToString("   "), hWidth() - hWidth() / 2, hHeight() + 200)
         } else {
             gc.fillText(sequence.joinToString("   "), hWidth() - hWidth() / 2, hHeight())
             gc.fillText(

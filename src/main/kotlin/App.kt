@@ -10,15 +10,17 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.stage.Stage
 import units.AngleUnit
+import units.InfoUnit
 import units.ReactionUnit
 import units.RememberUnit
+import javax.swing.JOptionPane
 
 class App : Application() {
 
     inner class TestUnitTimer : AnimationTimer() {
 
         private var currentIndex = 0
-        private var dataUtil = DataUtil()
+        private var dataUtil = DataUtil(JOptionPane.showInputDialog("User name?"))
 
         private var lastTime: Long = 0
 
@@ -132,6 +134,8 @@ class App : Application() {
     }
 
     fun addTests() {
+        addTest(InfoUnit("Welcome to HAA (Human Ability Analytics)!\nStay safe and enjoy the flight."))
+        addTest(AngleUnit(3))
         addTest(RememberUnit(5, RememberUnit.RememberUnitType.NUMBERS_ONLY))
         addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_ONLY))
         addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_AND_NUMBERS))
@@ -140,7 +144,6 @@ class App : Application() {
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREEN))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))
-        addTest(AngleUnit(3))
     }
 
     fun addTest(test: TestUnit) {
