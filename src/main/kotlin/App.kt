@@ -19,7 +19,26 @@ class App : Application() {
         private var currentIndex = 0
         private var dataUtil = DataUtil()
 
+        private var lastTime: Long = 0
+
+        private var fpsAvg = 0.0
+        private var fpsCounter = 0
+        private var lastFpsAvg = 0.0
+
         override fun handle(now: Long) {
+            fpsCounter++
+            val elapsedTime = System.currentTimeMillis() - lastTime
+            lastTime = System.currentTimeMillis()
+
+            val currentFps = (1.0 / (elapsedTime.toDouble() / 1000.0))
+            fpsAvg += currentFps
+
+            if (fpsCounter == 10) {
+                lastFpsAvg = fpsAvg / fpsCounter.toDouble()
+                fpsCounter == 0
+                fpsAvg = 0.0
+            }
+
             val gc = canvas.graphicsContext2D
 
             gc.fill = Color.WHITE
@@ -29,9 +48,11 @@ class App : Application() {
 
             gc.fill = Color.BLACK
             gc.font = Font.font(10.0)
+
             gc.fillText("Time: " + tests[currentIndex].getRuntime() / 1000.0 + "s", 10.0, 10.0)
             gc.fillText("Name: " + tests[currentIndex].getName(), 10.0, 30.0)
             gc.fillText("Desc: " + tests[currentIndex].getDesc(), 10.0, 50.0)
+            gc.fillText("FPS: " + lastFpsAvg.toInt(), 10.0, 70.0)
 
 
             if (tests[currentIndex].isFinished()) {
@@ -49,7 +70,7 @@ class App : Application() {
             tests[currentIndex].onClick(event.x, event.y)
         }
 
-        fun onMouseMove(event: MouseEvent){
+        fun onMouseMove(event: MouseEvent) {
             tests[currentIndex].onMove(event.x, event.y)
         }
 
@@ -88,6 +109,7 @@ class App : Application() {
 
         stage.scene = scene
         stage.show()
+        stage.isResizable = false
         addTests()
         runTests()
     }
