@@ -7,6 +7,8 @@ abstract class TestUnit {
     var width = 0
     var height = 0
 
+    val data = ArrayList<Int>()
+
     abstract fun update(gc: GraphicsContext)
 
     open fun onClick(x: Double, y: Double) {
@@ -17,8 +19,14 @@ abstract class TestUnit {
 
     }
 
-    open fun saveResults(dataUtil: DataUtil) {
+    fun saveResults(dataUtil: DataUtil) {
+        dataUtil.saveTestResult(getName(), data)
+    }
 
+    fun getDataAvg(): Double {
+        var value: Long = 0
+        data.forEach { value += it }
+        return value.toDouble() / data.size.toDouble()
     }
 
     fun getRuntime() = System.currentTimeMillis() - startTime

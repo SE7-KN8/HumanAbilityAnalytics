@@ -35,8 +35,6 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
 
     private var finishTime: Long = 0
 
-    private var times = ArrayList<Long>()
-
     override fun update(gc: GraphicsContext) {
         gc.fill = color
         when (currentState) {
@@ -58,8 +56,8 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
             }
             ReactionUnitStates.FINISHING -> {
                 gc.font = Font.font(20.0)
-                gc.fillText(times.joinToString(), 100.0, 100.0)
-                gc.fillText("Avg: " + calcAvg(), 100.0, 150.0)
+                gc.fillText(data.last().toString(), 100.0, 100.0)
+                gc.fillText("Avg: " + getDataAvg(), 100.0, 150.0)
                 if (getRuntime() >= finishTime) {
                     currentRun++
                     currentState = ReactionUnitStates.INIT
@@ -73,7 +71,7 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
             currentState = ReactionUnitStates.FINISHING
             finishTime = getRuntime() + 3000
             time = getRuntime() - showTime
-            times.add(time)
+            data.add(time.toInt())
         }
     }
 
@@ -97,21 +95,11 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
         }
     }
 
-    override fun saveResults(dataUtil: DataUtil) {
-        dataUtil.saveTestResult(getName(), times.map { it.toInt() })
-    }
-
     override fun isFinished(): Boolean {
         return currentRun == maxRuns
     }
 
-    override fun getName() = "ReactionUnit_"+ reactionType.name
+    override fun getName() = "ReactionUnit_" + reactionType.name
     override fun getDesc() = "Press any key when the rectangle is visible"
-
-    private fun calcAvg(): Float {
-        var value: Long = 0
-        times.forEach { value += it }
-        return value.toFloat() / times.size.toFloat()
-    }
 
 }

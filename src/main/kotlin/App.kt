@@ -130,7 +130,7 @@ class App : Application() {
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREEN))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))*/
-        addTest(AngleUnit())
+        addTest(AngleUnit(3))
     }
 
     fun addTest(test: TestUnit) {
