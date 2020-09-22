@@ -11,6 +11,7 @@ import javafx.scene.text.Font
 import javafx.stage.Stage
 import units.AngleUnit
 import units.ReactionUnit
+import units.RememberUnit
 
 class App : Application() {
 
@@ -33,9 +34,9 @@ class App : Application() {
             val currentFps = (1.0 / (elapsedTime.toDouble() / 1000.0))
             fpsAvg += currentFps
 
-            if (fpsCounter == 10) {
-                lastFpsAvg = fpsAvg / fpsCounter.toDouble()
-                fpsCounter == 0
+            if (fpsCounter == 5) {
+                lastFpsAvg = fpsAvg / (fpsCounter.toDouble() + 1.0)
+                fpsCounter = 0
                 fpsAvg = 0.0
             }
 
@@ -131,6 +132,9 @@ class App : Application() {
     }
 
     fun addTests() {
+        addTest(RememberUnit(5, RememberUnit.RememberUnitType.NUMBERS_ONLY))
+        addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_ONLY))
+        addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_AND_NUMBERS))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLACK))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREY))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
