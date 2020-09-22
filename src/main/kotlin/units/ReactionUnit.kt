@@ -1,21 +1,14 @@
 package units
 
-import DataUtil
 import TestUnit
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
+import kotlin.math.abs
 import kotlin.random.Random
 
-class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionType) : TestUnit() {
-
-    enum class ReactionUnitStates {
-        INIT,
-        WAITING,
-        SHOWING,
-        FINISHING
-    }
+class ReactionUnit(maxRuns: Int, private val reactionType: ReactionType) : TestUnit(maxRuns) {
 
     enum class ReactionType {
         ONLY_BLACK,
@@ -25,54 +18,42 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
         ONLY_BLUE
     }
 
-    private var currentRun = 0
 
     private var color = Color.BLACK
-    private var currentState = ReactionUnitStates.INIT
     private var time: Long = 0
     private var timeToWait: Long = 0
     private var showTime: Long = 0
 
-    private var finishTime: Long = 0
+    private var timeSet = false
 
-    override fun update(gc: GraphicsContext) {
-        gc.fill = color
-        when (currentState) {
-            ReactionUnitStates.INIT -> {
-                startTime = System.currentTimeMillis()
-                timeToWait = Random.nextLong(2000, 5000)
-                currentState = ReactionUnitStates.WAITING
-                setColor()
+    override fun init() {
+        timeToWait = getRuntime() + Random.nextLong(2000, 5000)
+        setColor()
+        timeSet = false
+    }
+
+    override fun drawUpdate(gc: GraphicsContext) {
+        if (getRuntime() >= timeToWait) {
+            if (!timeSet) {
+                showTime = getRuntime()
+                timeSet = true
             }
-            ReactionUnitStates.SHOWING -> {
-                val size = 600.0
-                gc.fillRect(width.toDouble() / 2.0 - size / 2.0, height.toDouble() / 2.0 - size / 2.0, size, size)
-            }
-            ReactionUnitStates.WAITING -> {
-                if (getRuntime() >= timeToWait) {
-                    currentState = ReactionUnitStates.SHOWING
-                    showTime = getRuntime()
-                }
-            }
-            ReactionUnitStates.FINISHING -> {
-                gc.font = Font.font(20.0)
-                gc.fillText(data.last().toString(), 100.0, 100.0)
-                gc.fillText("Avg: " + getDataAvg(), 100.0, 150.0)
-                if (getRuntime() >= finishTime) {
-                    currentRun++
-                    currentState = ReactionUnitStates.INIT
-                }
-            }
+            gc.fill = color
+            gc.fillRect(hWidth() - 300.0, hHeight() - 300.0, 600.0, 600.0)
         }
     }
 
-    override fun onKey(e: KeyCode) {
-        if (currentState == ReactionUnitStates.SHOWING) {
-            currentState = ReactionUnitStates.FINISHING
-            finishTime = getRuntime() + 3000
-            time = getRuntime() - showTime
-            data.add(time.toInt())
-        }
+    override fun drawFinish(gc: GraphicsContext) {
+        super.drawFinish(gc)
+        gc.font = Font.font(20.0)
+        gc.fill = Color.BLACK
+        gc.fillText(getLastValue().toString(), 100.0, 100.0)
+        gc.fillText("Avg: " + getDataAvg(), 100.0, 150.0)
+    }
+
+    override fun handleKey(e: KeyCode) {
+        time = abs(getRuntime() - showTime)
+        finish(time.toInt())
     }
 
     private fun setColor() {
@@ -81,7 +62,7 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
                 color = Color.BLACK
             }
             ReactionType.ONLY_GREY -> {
-                color = Color.GRAY
+                color = Color.LIGHTGREY
             }
             ReactionType.ONLY_BLUE -> {
                 color = Color.BLUE
@@ -93,10 +74,6 @@ class ReactionUnit(private val maxRuns: Int, private val reactionType: ReactionT
                 color = Color.RED
             }
         }
-    }
-
-    override fun isFinished(): Boolean {
-        return currentRun == maxRuns
     }
 
     override fun getName() = "ReactionUnit_" + reactionType.name

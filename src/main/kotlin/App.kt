@@ -67,15 +67,21 @@ class App : Application() {
         }
 
         fun onMouseEvent(event: MouseEvent) {
-            tests[currentIndex].onClick(event.x, event.y)
+            if (currentIndex < tests.size) {
+                tests[currentIndex].onClick(event.x, event.y)
+            }
         }
 
         fun onMouseMove(event: MouseEvent) {
-            tests[currentIndex].onMove(event.x, event.y)
+            if (currentIndex < tests.size) {
+                tests[currentIndex].onMove(event.x, event.y)
+            }
         }
 
         fun onKey(event: KeyEvent) {
-            tests[currentIndex].onKey(event.code)
+            if (currentIndex < tests.size) {
+                tests[currentIndex].onKey(event.code)
+            }
         }
 
     }
@@ -125,11 +131,11 @@ class App : Application() {
     }
 
     fun addTests() {
-        /*addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLACK))
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLACK))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREY))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
         addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREEN))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))*/
+        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))
         addTest(AngleUnit(3))
     }
 
