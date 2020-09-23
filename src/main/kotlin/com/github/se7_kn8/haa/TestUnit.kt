@@ -1,3 +1,5 @@
+package com.github.se7_kn8.haa
+
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 

@@ -1,6 +1,6 @@
-package units
+package com.github.se7_kn8.haa.units
 
-import TestUnit
+import com.github.se7_kn8.haa.TestUnit
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.KeyCode
 import javafx.scene.paint.Color

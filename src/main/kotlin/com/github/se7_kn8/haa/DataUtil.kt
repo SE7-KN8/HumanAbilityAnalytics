@@ -1,5 +1,6 @@
+package com.github.se7_kn8.haa
+
 import java.io.BufferedWriter
-import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
