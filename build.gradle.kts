@@ -4,11 +4,11 @@ plugins {
     kotlin("jvm") version "1.4.10"
     id("application")
     id("org.openjfx.javafxplugin") version "0.0.9"
-    id("org.beryx.jlink") version "2.12.0"
+    id("org.beryx.jlink") version "2.22.0"
 }
 
 group = "com.github.se7_kn8"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
@@ -37,6 +37,6 @@ application {
 
 jlink {
     launcher {
-        name = "AppKt"
+        name = "HumanAbilityAnalytics"
     }
 }
