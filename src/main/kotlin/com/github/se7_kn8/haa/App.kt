@@ -1,3 +1,6 @@
+package com.github.se7_kn8.haa
+
+import com.github.se7_kn8.haa.units.*
 import javafx.animation.AnimationTimer
 import javafx.application.Application
 import javafx.application.Platform
@@ -9,15 +12,15 @@ import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.stage.Stage
-import units.*
-import javax.swing.JOptionPane
 
 class App : Application() {
 
     inner class TestUnitTimer : AnimationTimer() {
 
         private var currentIndex = 0
-        private var dataUtil = DataUtil(JOptionPane.showInputDialog("User name?"))
+
+        // TODO
+        private var dataUtil = DataUtil("")
 
         private var lastTime: Long = 0
 
