@@ -15,8 +15,8 @@ class RememberUnit(maxRuns: Int, private val rememberUnitType: RememberUnitType)
         TEXT_AND_NUMBERS
     }
 
-    private val numbers = "0123456789"
-    private val letters = "ABCDEFGHIJKLMNOPQRSTVUWXYZ"
+    private val numbers = "123456789"
+    private val letters = "ABCDEFGHIJKLMNPQRSTVUWXYZ"
 
     private val sequenceLength = 20
 

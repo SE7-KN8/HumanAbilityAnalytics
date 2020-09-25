@@ -33,7 +33,7 @@ class App : Application() {
             val currentFps = (1.0 / (elapsedTime.toDouble() / 1000.0))
             fpsAvg += currentFps
 
-            if (fpsCounter == 5) {
+            if (fpsCounter == 10) {
                 lastFpsAvg = fpsAvg / (fpsCounter.toDouble())
                 fpsCounter = 0
                 fpsAvg = 0.0
@@ -132,16 +132,22 @@ class App : Application() {
 
     fun addTests() {
         addTest(InfoUnit("Welcome to HAA (Human Ability Analytics)!\nStay safe and enjoy the flight."))
-        addTest(CountdownUnit(30))
-        addTest(AngleUnit(3))
-        addTest(RememberUnit(5, RememberUnit.RememberUnitType.NUMBERS_ONLY))
-        addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_ONLY))
-        addTest(RememberUnit(5, RememberUnit.RememberUnitType.TEXT_AND_NUMBERS))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLACK))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREY))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_RED))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_GREEN))
-        addTest(ReactionUnit(3, ReactionUnit.ReactionType.ONLY_BLUE))
+        addTest(InfoUnit("Next: Interval test.\nTry to measure the light interval."))
+        addTest(InfoUnit("Next: Distance test.\nTry to measure the distance."))
+        addTest(InfoUnit("Next: Reaction test.\nPress any key if you see the rectangle."))
+        addTest(ReactionUnit(4, ReactionUnit.ReactionType.ONLY_BLACK))
+        addTest(ReactionUnit(4, ReactionUnit.ReactionType.ONLY_RED))
+        addTest(ReactionUnit(4, ReactionUnit.ReactionType.ONLY_GREY))
+        addTest(ReactionUnit(4, ReactionUnit.ReactionType.ONLY_BLUE))
+        addTest(ReactionUnit(4, ReactionUnit.ReactionType.ONLY_GREEN))
+        addTest(InfoUnit("Next: Extend Countdown\nPress any key if you think the countdown ends."))
+        addTest(CountdownUnit(5))
+        addTest(InfoUnit("Next: Remember\nRemember the sequence and type it when it disappears."))
+        addTest(RememberUnit(2, RememberUnit.RememberUnitType.NUMBERS_ONLY))
+        addTest(RememberUnit(2, RememberUnit.RememberUnitType.TEXT_ONLY))
+        addTest(RememberUnit(2, RememberUnit.RememberUnitType.TEXT_AND_NUMBERS))
+        addTest(InfoUnit("Next: Angle\nTry to draw the angle and click if you think you are correct."))
+        addTest(AngleUnit(5))
     }
 
     fun addTest(test: TestUnit) {
