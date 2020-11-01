@@ -36,6 +36,7 @@ application {
 }
 
 jlink {
+    options.set(listOf("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages"))
     launcher {
         name = "HumanAbilityAnalytics"
     }
